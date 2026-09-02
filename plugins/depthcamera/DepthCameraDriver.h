@@ -11,6 +11,9 @@
 #include <string>
 #include <yarp/dev/DeviceDriver.h>
 #include <yarp/dev/IRGBDSensor.h>
+#include <yarp/sig/DistortionModelData.h>
+#include <yarp/sig/IntrinsicParamsData.h>
+#include <yarp/sig/CameraDistortionType.h>
 #include <gzyarp/YarpDevReturnValueCompat.h>
 #include <yarp/os/Log.h>
 #include <yarp/os/LogStream.h>
@@ -38,7 +41,7 @@ public:
     YARP_DEV_RETURN_VALUE_TYPE_CH40 setRgbFOV(double horizontalFov, double verticalFov) override;
     YARP_DEV_RETURN_VALUE_TYPE_CH40 getRgbMirroring(bool& mirror) override;
     YARP_DEV_RETURN_VALUE_TYPE_CH40 setRgbMirroring(bool mirror) override;
-    YARP_DEV_RETURN_VALUE_TYPE_CH40 getRgbIntrinsicParam(yarp::os::Property& intrinsic) override;
+    YARP_DEV_RETURN_VALUE_TYPE_CH40 getRgbIntrinsicParam(yarp::sig::IntrinsicParams& intrinsic) override;
     YARP_DEV_RETURN_VALUE_TYPE_CH40 getRgbImage(yarp::sig::FlexImage& rgbImage, yarp::os::Stamp* timeStamp = NULL) override;
 #if (YARP_VERSION_MAJOR > 3) || (YARP_VERSION_MAJOR == 3 && YARP_VERSION_MINOR > 12) || (YARP_VERSION_MAJOR == 3 && YARP_VERSION_MINOR == 12 && YARP_VERSION_PATCH >= 100)
     // New in YARP 4
@@ -51,7 +54,7 @@ public:
     YARP_DEV_RETURN_VALUE_TYPE_CH40 setDepthResolution(int width, int height) override;
     YARP_DEV_RETURN_VALUE_TYPE_CH40 getDepthFOV(double& horizontalFov, double& verticalFov) override;
     YARP_DEV_RETURN_VALUE_TYPE_CH40 setDepthFOV(double horizontalFov, double verticalFov) override;
-    YARP_DEV_RETURN_VALUE_TYPE_CH40 getDepthIntrinsicParam(yarp::os::Property& intrinsic) override;
+    YARP_DEV_RETURN_VALUE_TYPE_CH40 getDepthIntrinsicParam(yarp::sig::IntrinsicParams& intrinsic) override;
 #if (YARP_VERSION_MAJOR > 3) || (YARP_VERSION_MAJOR == 3 && YARP_VERSION_MINOR > 12) || (YARP_VERSION_MAJOR == 3 && YARP_VERSION_MINOR == 12 && YARP_VERSION_PATCH >= 100)
     YARP_DEV_RETURN_VALUE_TYPE_CH40 getDepthAccuracy(double& accuracy) override;
 #else

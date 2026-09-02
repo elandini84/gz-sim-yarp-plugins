@@ -75,26 +75,28 @@ YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::setRgbMirroring(bool /*mirror
     return YARP_DEV_RETURN_VALUE_ERROR_NOT_IMPLEMENTED_BY_DEVICE_CH40;
 }
 
-YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::getRgbIntrinsicParam(yarp::os::Property& intrinsic)
+YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::getRgbIntrinsicParam(yarp::sig::IntrinsicParams& intrinsic)
 {
     if (!m_sensorData) {
         yCError(GZDEPTH) << "getRgbIntrinsicParam: sensor data not available!";
         return YARP_DEV_RETURN_VALUE_ERROR_NOT_READY_CH40;
     }
-    yarp::os::Value        rectM;
-
-    intrinsic.put("physFocalLength", 0.0);
-    intrinsic.put("focalLengthX", m_sensorData->focalLengthX);
-    intrinsic.put("focalLengthY", m_sensorData->focalLengthY);
-    intrinsic.put("k1", m_sensorData->m_distModel.k1);
-    intrinsic.put("k2", m_sensorData->m_distModel.k2);
-    intrinsic.put("k3", m_sensorData->m_distModel.k3);
-    intrinsic.put("t1", m_sensorData->m_distModel.p1);
-    intrinsic.put("t2", m_sensorData->m_distModel.p2);
-    intrinsic.put("principalPointX", m_sensorData->m_distModel.cx);
-    intrinsic.put("principalPointY", m_sensorData->m_distModel.cy);
-    intrinsic.put("rectificationMatrix", rectM.makeList("1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0"));
-    intrinsic.put("distortionModel", "plumb_bob");
+    yarp::sig::Vector rectM{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+    yarp::sig::CameraDistortionType distortionType = yarp::sig::CameraDistortionType::YARP_PLUMB_BOB;
+    yarp::sig::DistortionModelData distortionModel(m_sensorData->m_distModel.k1,
+                                                    m_sensorData->m_distModel.k2,
+                                                    m_sensorData->m_distModel.k3,
+                                                    m_sensorData->m_distModel.p1,
+                                                    m_sensorData->m_distModel.p2,
+                                                    distortionType);
+    intrinsic.physFocalLength = 0.0;
+    intrinsic.principalPointX = m_sensorData->m_distModel.cx;
+    intrinsic.principalPointY = m_sensorData->m_distModel.cy;
+    intrinsic.focalLengthX = m_sensorData->focalLengthX;
+    intrinsic.focalLengthY = m_sensorData->focalLengthY;
+    intrinsic.distortionModel = distortionModel;
+    intrinsic.rectificationMatrix3X3 = rectM;
+    intrinsic.isOptional = false;
     return YARP_DEV_RETURN_VALUE_OK_CH40;
 }
 
@@ -162,7 +164,7 @@ YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::setDepthFOV(double /*horizont
     return YARP_DEV_RETURN_VALUE_ERROR_NOT_IMPLEMENTED_BY_DEVICE_CH40;
 }
 
-YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::getDepthIntrinsicParam(yarp::os::Property& intrinsic)
+YARP_DEV_RETURN_VALUE_TYPE_CH40 DepthCameraDriver::getDepthIntrinsicParam(yarp::sig::IntrinsicParams& intrinsic)
 {
     return getRgbIntrinsicParam(intrinsic);
 }
