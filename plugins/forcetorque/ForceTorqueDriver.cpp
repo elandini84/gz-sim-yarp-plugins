@@ -11,6 +11,7 @@
 #include <yarp/os/Log.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Searchable.h>
+#include <gzyarp/YarpDevReturnValueCompat.h>
 #include <yarp/sig/Vector.h>
 
 namespace yarp
@@ -71,9 +72,10 @@ public:
     }
 
     // SIX AXIS FORCE TORQUE SENSORS
-    size_t getNrOfSixAxisForceTorqueSensors() const override
+    yarp::dev::ReturnValue getNrOfSixAxisForceTorqueSensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getSixAxisForceTorqueSensorStatus(size_t sens_index) const override
@@ -86,35 +88,34 @@ public:
         return MAS_OK;
     }
 
-    bool getSixAxisForceTorqueSensorName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getSixAxisForceTorqueSensorName(size_t sens_index, std::string& name) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         name = m_sensorName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool
-    getSixAxisForceTorqueSensorFrameName(size_t sens_index, std::string& frameName) const override
+    yarp::dev::ReturnValue getSixAxisForceTorqueSensorFrameName(size_t sens_index, std::string& frameName) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         frameName = m_frameName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    virtual bool getSixAxisForceTorqueSensorMeasure(size_t sens_index,
-                                                    yarp::sig::Vector& out,
-                                                    double& timestamp) const override
+    virtual yarp::dev::ReturnValue getSixAxisForceTorqueSensorMeasure(size_t sens_index,
+                                                                    yarp::sig::Vector& out,
+                                                                    double& timestamp) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         if (out.size() != YarpForceTorqueChannelsNumber)
@@ -134,14 +135,15 @@ public:
         out = m_forceTorqueData;
 
         timestamp = m_sensorData->simTime;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // TEMPERATURE SENSORS
 
-    size_t getNrOfTemperatureSensors() const override
+    yarp::dev::ReturnValue getNrOfTemperatureSensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getTemperatureSensorStatus(size_t sens_index) const override
@@ -154,51 +156,50 @@ public:
         return MAS_OK;
     }
 
-    bool getTemperatureSensorName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getTemperatureSensorName(size_t sens_index, std::string& name) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         std::lock_guard<std::mutex> lock(m_sensorData->m_mutex);
         name = m_sensorName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool getTemperatureSensorFrameName(size_t sens_index, std::string& frameName) const override
+    yarp::dev::ReturnValue getTemperatureSensorFrameName(size_t sens_index, std::string& frameName) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         std::lock_guard<std::mutex> lock(m_sensorData->m_mutex);
         frameName = m_frameName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool
-    getTemperatureSensorMeasure(size_t sens_index, double& out, double& timestamp) const override
+    yarp::dev::ReturnValue getTemperatureSensorMeasure(size_t sens_index, double& out, double& timestamp) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         std::lock_guard<std::mutex> lock(m_sensorData->m_mutex);
         out = fakeTemperatureValue;
         timestamp = m_sensorData->simTime;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool getTemperatureSensorMeasure(size_t sens_index,
+    yarp::dev::ReturnValue getTemperatureSensorMeasure(size_t sens_index,
                                      yarp::sig::Vector& out,
                                      double& timestamp) const override
     {
         if (sens_index >= 1)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         if (out.size() != YarpTemperatureChannelsNumber)
@@ -209,7 +210,7 @@ public:
         std::lock_guard<std::mutex> lock(m_sensorData->m_mutex);
         out[0] = fakeTemperatureValue;
         timestamp = m_sensorData->simTime;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IForceTorqueData
