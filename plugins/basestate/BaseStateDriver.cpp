@@ -10,6 +10,7 @@
 #include <yarp/dev/IAnalogSensor.h>
 #include <yarp/dev/IPreciselyTimed.h>
 #include <yarp/dev/MultipleAnalogSensorsInterfaces.h>
+#include <gzyarp/YarpDevReturnValueCompat.h>
 #include <yarp/os/Log.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Searchable.h>
@@ -160,9 +161,10 @@ public:
     // MultipleAnalogSensors family implementations
 
     // IPositionSensors (worldBasePose.Pos())
-    size_t getNrOfPositionSensors() const override
+    yarp::dev::ReturnValue getNrOfPositionSensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getPositionSensorStatus(size_t idx) const override
     {
@@ -172,47 +174,48 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getPositionSensorName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getPositionSensorName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getPositionSensorFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getPositionSensorFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getPositionSensorMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
+    yarp::dev::ReturnValue getPositionSensorMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out[0] = m_baseLinkData->position[0];
         out[1] = m_baseLinkData->position[1];
         out[2] = m_baseLinkData->position[2];
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IOrientationSensors (worldBasePose.Rot()) as roll-pitch-yaw
-    size_t getNrOfOrientationSensors() const override
+    yarp::dev::ReturnValue getNrOfOrientationSensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getOrientationSensorStatus(size_t idx) const override
     {
@@ -222,50 +225,51 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getOrientationSensorName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getOrientationSensorName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getOrientationSensorFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getOrientationSensorFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getOrientationSensorMeasureAsRollPitchYaw(size_t idx,
-                                                   yarp::sig::Vector& rpy,
-                                                   double& ts) const override
+    yarp::dev::ReturnValue getOrientationSensorMeasureAsRollPitchYaw(size_t idx,
+                                                                      yarp::sig::Vector& rpy,
+                                                                      double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         rpy.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         // Convert from radians (Gazebo) to degrees (YARP)
         rpy[0] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->orientation[0]);
         rpy[1] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->orientation[1]);
         rpy[2] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->orientation[2]);
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // ILinearVelocitySensors (worldBaseLinVel)
-    size_t getNrOfLinearVelocitySensors() const override
+    yarp::dev::ReturnValue getNrOfLinearVelocitySensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getLinearVelocitySensorStatus(size_t idx) const override
     {
@@ -275,48 +279,48 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getLinearVelocitySensorName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getLinearVelocitySensorName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getLinearVelocitySensorFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getLinearVelocitySensorFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool
-    getLinearVelocitySensorMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
+    yarp::dev::ReturnValue getLinearVelocitySensorMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out[0] = m_baseLinkData->linVel[0];
         out[1] = m_baseLinkData->linVel[1];
         out[2] = m_baseLinkData->linVel[2];
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IThreeAxisGyroscopes (worldBaseAngVel)
-    size_t getNrOfThreeAxisGyroscopes() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisGyroscopes(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getThreeAxisGyroscopeStatus(size_t idx) const override
     {
@@ -326,48 +330,49 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getThreeAxisGyroscopeName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisGyroscopeName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisGyroscopeFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getThreeAxisGyroscopeFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisGyroscopeMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
+    yarp::dev::ReturnValue getThreeAxisGyroscopeMeasure(size_t idx, yarp::sig::Vector& out, double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         // Convert from rad/s to deg/s
         out[0] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angVel[0]);
         out[1] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angVel[1]);
         out[2] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angVel[2]);
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IThreeAxisLinearAccelerometers (worldBaseLinAcc)
-    size_t getNrOfThreeAxisLinearAccelerometers() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisLinearAccelerometers(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getThreeAxisLinearAccelerometerStatus(size_t idx) const override
     {
@@ -377,49 +382,50 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getThreeAxisLinearAccelerometerName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisLinearAccelerometerFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisLinearAccelerometerMeasure(size_t idx,
-                                                yarp::sig::Vector& out,
-                                                double& ts) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerMeasure(size_t idx,
+                                                                yarp::sig::Vector& out,
+                                                                double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out[0] = m_baseLinkData->linAcc[0];
         out[1] = m_baseLinkData->linAcc[1];
         out[2] = m_baseLinkData->linAcc[2];
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IThreeAxisAngularAccelerometers (worldBaseAngAcc)
-    size_t getNrOfThreeAxisAngularAccelerometers() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisAngularAccelerometers(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
     yarp::dev::MAS_status getThreeAxisAngularAccelerometerStatus(size_t idx) const override
     {
@@ -429,44 +435,44 @@ public:
         }
         return yarp::dev::MAS_status::MAS_OK;
     }
-    bool getThreeAxisAngularAccelerometerName(size_t idx, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisAngularAccelerometerName(size_t idx, std::string& name) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         name = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisAngularAccelerometerFrameName(size_t idx, std::string& frame) const override
+    yarp::dev::ReturnValue getThreeAxisAngularAccelerometerFrameName(size_t idx, std::string& frame) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         frame = m_baseLinkName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
-    bool getThreeAxisAngularAccelerometerMeasure(size_t idx,
-                                                 yarp::sig::Vector& out,
-                                                 double& ts) const override
+    yarp::dev::ReturnValue getThreeAxisAngularAccelerometerMeasure(size_t idx,
+                                                                 yarp::sig::Vector& out,
+                                                                 double& ts) const override
     {
         if (idx != 0)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         out.resize(3);
         std::lock_guard<std::mutex> lock(m_baseLinkData->mutex);
         if (!m_baseLinkData->dataAvailable)
         {
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
         // Convert from rad/s^2 to deg/s^2
         out[0] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angAcc[0]);
         out[1] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angAcc[1]);
         out[2] = ::gzyarp::convertRadiansToDegrees(m_baseLinkData->angAcc[2]);
         ts = m_baseLinkData->simTimestamp.getTime();
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     // IBaseStateData

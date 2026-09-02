@@ -118,7 +118,9 @@ TEST_F(BaseStateFixture, CheckPositionSensors)
     ASSERT_TRUE(configured);
 
     // Test IPositionSensors interface
-    ASSERT_EQ(iPositionSensors->getNrOfPositionSensors(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iPositionSensors->getNrOfPositionSensors(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(iPositionSensors->getPositionSensorName(0, sensorName));
@@ -151,7 +153,9 @@ TEST_F(BaseStateFixture, CheckOrientationSensors)
     ASSERT_TRUE(configured);
 
     // Test IOrientationSensors interface
-    ASSERT_EQ(iOrientationSensors->getNrOfOrientationSensors(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iOrientationSensors->getNrOfOrientationSensors(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(iOrientationSensors->getOrientationSensorName(0, sensorName));
@@ -186,7 +190,9 @@ TEST_F(BaseStateFixture, CheckLinearVelocitySensors)
     ASSERT_TRUE(configured);
 
     // Test ILinearVelocitySensors interface
-    ASSERT_EQ(iLinearVelocitySensors->getNrOfLinearVelocitySensors(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iLinearVelocitySensors->getNrOfLinearVelocitySensors(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(iLinearVelocitySensors->getLinearVelocitySensorName(0, sensorName));
@@ -221,7 +227,9 @@ TEST_F(BaseStateFixture, CheckThreeAxisGyroscopes)
     ASSERT_TRUE(configured);
 
     // Test IThreeAxisGyroscopes interface
-    ASSERT_EQ(iThreeAxisGyroscopes->getNrOfThreeAxisGyroscopes(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iThreeAxisGyroscopes->getNrOfThreeAxisGyroscopes(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(iThreeAxisGyroscopes->getThreeAxisGyroscopeName(0, sensorName));
@@ -255,7 +263,9 @@ TEST_F(BaseStateFixture, CheckThreeAxisLinearAccelerometers)
     ASSERT_TRUE(configured);
 
     // Test IThreeAxisLinearAccelerometers interface
-    ASSERT_EQ(iThreeAxisLinearAccelerometers->getNrOfThreeAxisLinearAccelerometers(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iThreeAxisLinearAccelerometers->getNrOfThreeAxisLinearAccelerometers(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(iThreeAxisLinearAccelerometers->getThreeAxisLinearAccelerometerName(0, sensorName));
@@ -287,7 +297,9 @@ TEST_F(BaseStateFixture, CheckThreeAxisAngularAccelerometers)
     ASSERT_TRUE(configured);
 
     // Test IThreeAxisAngularAccelerometers interface
-    ASSERT_EQ(iThreeAxisAngularAccelerometers->getNrOfThreeAxisAngularAccelerometers(), 1);
+    size_t numSensors = 0;
+    ASSERT_TRUE(iThreeAxisAngularAccelerometers->getNrOfThreeAxisAngularAccelerometers(numSensors));
+    ASSERT_EQ(numSensors, 1);
 
     std::string sensorName;
     ASSERT_TRUE(
