@@ -11,6 +11,7 @@
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Searchable.h>
 #include <yarp/sig/Vector.h>
+#include <gzyarp/YarpDevReturnValueCompat.h>
 
 namespace yarp
 {
@@ -78,9 +79,10 @@ public:
     }
 
     // THREE AXIS GYROSCOPES
-    size_t getNrOfThreeAxisGyroscopes() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisGyroscopes(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getThreeAxisGyroscopeStatus(size_t sens_index) const override
@@ -88,17 +90,17 @@ public:
         return genericGetStatus(sens_index);
     }
 
-    bool getThreeAxisGyroscopeName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisGyroscopeName(size_t sens_index, std::string& name) const override
     {
         return genericGetSensorName(sens_index, name);
     }
 
-    bool getThreeAxisGyroscopeFrameName(size_t sens_index, std::string& frameName) const override
+    yarp::dev::ReturnValue getThreeAxisGyroscopeFrameName(size_t sens_index, std::string& frameName) const override
     {
         return genericGetFrameName(sens_index, frameName);
     }
 
-    bool getThreeAxisGyroscopeMeasure(size_t sens_index,
+    yarp::dev::ReturnValue getThreeAxisGyroscopeMeasure(size_t sens_index,
                                       yarp::sig::Vector& out,
                                       double& timestamp) const override
     {
@@ -106,9 +108,10 @@ public:
     }
 
     // THREE AXIS LINEAR ACCELEROMETERS
-    size_t getNrOfThreeAxisLinearAccelerometers() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisLinearAccelerometers(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getThreeAxisLinearAccelerometerStatus(size_t sens_index) const override
@@ -116,28 +119,28 @@ public:
         return genericGetStatus(sens_index);
     }
 
-    bool getThreeAxisLinearAccelerometerName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerName(size_t sens_index, std::string& name) const override
     {
         return genericGetSensorName(sens_index, name);
     }
 
-    bool getThreeAxisLinearAccelerometerFrameName(size_t sens_index,
-                                                  std::string& frameName) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerFrameName(size_t sens_index, std::string& frameName) const override
     {
         return genericGetFrameName(sens_index, frameName);
     }
 
-    bool getThreeAxisLinearAccelerometerMeasure(size_t sens_index,
-                                                yarp::sig::Vector& out,
-                                                double& timestamp) const override
+    yarp::dev::ReturnValue getThreeAxisLinearAccelerometerMeasure(size_t sens_index,
+                                                                yarp::sig::Vector& out,
+                                                                double& timestamp) const override
     {
         return genericGetMeasure(sens_index, out, timestamp, accelStartIdx);
     }
 
     // ORIENTATION SENSORS
-    size_t getNrOfOrientationSensors() const override
+    yarp::dev::ReturnValue getNrOfOrientationSensors(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getOrientationSensorStatus(size_t sens_index) const override
@@ -145,28 +148,29 @@ public:
         return genericGetStatus(sens_index);
     }
 
-    bool getOrientationSensorName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getOrientationSensorName(size_t sens_index, std::string& name) const override
     {
         return genericGetSensorName(sens_index, name);
     }
 
-    bool getOrientationSensorFrameName(size_t sens_index, std::string& frameName) const override
+    yarp::dev::ReturnValue getOrientationSensorFrameName(size_t sens_index, std::string& frameName) const override
     {
         return genericGetFrameName(sens_index, frameName);
     }
 
-    bool getOrientationSensorMeasureAsRollPitchYaw(size_t sens_index,
-                                                   yarp::sig::Vector& rpy,
-                                                   double& timestamp) const override
+    yarp::dev::ReturnValue getOrientationSensorMeasureAsRollPitchYaw(size_t sens_index,
+                                                                    yarp::sig::Vector& rpy,
+                                                                    double& timestamp) const override
     {
         return genericGetMeasure(sens_index, rpy, timestamp, rpyStartIdx);
     }
 
     // THREE AXIS MAGNETOMETERS
 
-    size_t getNrOfThreeAxisMagnetometers() const override
+    yarp::dev::ReturnValue getNrOfThreeAxisMagnetometers(size_t &n) const override
     {
-        return 1;
+        n = 1;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
     yarp::dev::MAS_status getThreeAxisMagnetometerStatus(size_t sens_index) const override
@@ -174,17 +178,17 @@ public:
         return genericGetStatus(sens_index);
     }
 
-    bool getThreeAxisMagnetometerName(size_t sens_index, std::string& name) const override
+    yarp::dev::ReturnValue getThreeAxisMagnetometerName(size_t sens_index, std::string& name) const override
     {
         return genericGetSensorName(sens_index, name);
     }
 
-    bool getThreeAxisMagnetometerFrameName(size_t sens_index, std::string& frameName) const override
+    yarp::dev::ReturnValue getThreeAxisMagnetometerFrameName(size_t sens_index, std::string& frameName) const override
     {
         return genericGetFrameName(sens_index, frameName);
     }
 
-    bool getThreeAxisMagnetometerMeasure(size_t sens_index,
+    yarp::dev::ReturnValue getThreeAxisMagnetometerMeasure(size_t sens_index,
                                          yarp::sig::Vector& out,
                                          double& timestamp) const override
     {
@@ -215,43 +219,43 @@ private:
         return yarp::dev::MAS_status::MAS_OK;
     }
 
-    bool genericGetSensorName(size_t sens_index, std::string& name) const
+    yarp::dev::ReturnValue genericGetSensorName(size_t sens_index, std::string& name) const
     {
         if (sens_index != 0)
         {
             yError() << "IMUDriver: sens_index must be equal to 0, since there is  only one sensor "
                         "in consideration";
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         name = m_sensorName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool genericGetFrameName(size_t sens_index, std::string& frameName) const
+    yarp::dev::ReturnValue genericGetFrameName(size_t sens_index, std::string& frameName) const
     {
         if (sens_index != 0)
         {
             yError() << "IMUDriver: sens_index must be equal to 0, since there is  only one sensor "
                         "in consideration";
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         frameName = m_frameName;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 
-    bool genericGetMeasure(size_t sens_index,
-                           yarp::sig::Vector& out,
-                           double& timestamp,
-                           size_t startIdx) const
+    yarp::dev::ReturnValue genericGetMeasure(size_t sens_index,
+                            yarp::sig::Vector& out,
+                            double& timestamp,
+                            size_t startIdx) const
     {
 
         if (sens_index != 0)
         {
             yError() << "IMUDriver: sens_index must be equal to 0, since there is  only one sensor "
                         "in consideration";
-            return false;
+            return YARP_DEV_RETURN_VALUE_ERROR_GENERIC_CH40;
         }
 
         out.resize(3);
@@ -261,6 +265,6 @@ private:
         out[2] = m_sensorData->m_data[startIdx + 2];
 
         timestamp = m_sensorData->simTime;
-        return true;
+        return YARP_DEV_RETURN_VALUE_OK_CH40;
     }
 };

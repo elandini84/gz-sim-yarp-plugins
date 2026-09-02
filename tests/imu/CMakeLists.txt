@@ -10,6 +10,7 @@ target_link_libraries(ImuTest
         YARP::YARP_init
         gz-sim-yarp-device-registry
         gz-sim-yarp-imu-system
+        gz-sim-yarp-commons
 )
 add_test(NAME ImuTest
          COMMAND ImuTest)
